@@ -1,0 +1,49 @@
+<div style="display: flex; align-items: center; justify-content: space-between;">
+  <mat-form-field appearance="outline">
+    <mat-label>Enter a release date range</mat-label>
+    <mat-date-range-input
+      [formGroup]="primaryReleaseDate"
+      [rangePicker]="picker"
+    >
+      <input
+        matStartDate
+        [disabled]="true"
+        formControlName="start"
+        placeholder="Start date"
+      />
+      <input
+        matEndDate
+        [disabled]="true"
+        formControlName="end"
+        placeholder="End date"
+      />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
+    <mat-error *ngIf="fc['startDate'].hasError('matStartDateInvalid')"
+      >Invalid start date</mat-error
+    >
+    <mat-error *ngIf="fc['endDate'].hasError('matEndDateInvalid')"
+      >Invalid end date</mat-error
+    >
+  </mat-form-field>
+
+  <mat-button-toggle-group name="sorting" aria-label="Ingredients" multiple>
+    <mat-button-toggle value="flour"
+      >Popularity <mat-icon>arrow_upward</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="eggs"
+      >Release Date <mat-icon>arrow_downward</mat-icon>
+    </mat-button-toggle>
+    <mat-button-toggle value="sugar"
+      >Vote Count <mat-icon>arrow_downward</mat-icon>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<mat-grid-list cols="4" rowHeight="280">
+  <mat-grid-tile style="background-color: rgb(216, 216, 216)">1</mat-grid-tile>
+  <mat-grid-tile style="background-color: rgb(202, 202, 202)">2</mat-grid-tile>
+  <mat-grid-tile style="background-color: rgb(202, 202, 202)">3</mat-grid-tile>
+  <mat-grid-tile style="background-color: rgb(202, 202, 202)">4</mat-grid-tile>
+</mat-grid-list>
