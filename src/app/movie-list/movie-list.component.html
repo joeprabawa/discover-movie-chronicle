@@ -1,49 +1,131 @@
-<div style="display: flex; align-items: center; justify-content: space-between;">
-  <mat-form-field appearance="outline">
-    <mat-label>Enter a release date range</mat-label>
-    <mat-date-range-input
-      [formGroup]="primaryReleaseDate"
-      [rangePicker]="picker"
-    >
-      <input
-        matStartDate
-        [disabled]="true"
-        formControlName="start"
-        placeholder="Start date"
-      />
-      <input
-        matEndDate
-        [disabled]="true"
-        formControlName="end"
-        placeholder="End date"
-      />
-    </mat-date-range-input>
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
-    <mat-error *ngIf="fc['startDate'].hasError('matStartDateInvalid')"
-      >Invalid start date</mat-error
-    >
-    <mat-error *ngIf="fc['endDate'].hasError('matEndDateInvalid')"
-      >Invalid end date</mat-error
-    >
-  </mat-form-field>
+<ng-container
+  *ngIf="{
+    discoverMovies: discoverMovies$ | async,
+    filterAndSort: filterAndSort$ | async
+  } as vm"
+>
+  <div
+    style="display: flex; align-items: center; justify-content: space-between"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label>Enter a release date range</mat-label>
+      <mat-date-range-input
+        [formGroup]="primaryReleaseDate"
+        [rangePicker]="picker"
+      >
+        <input
+          matStartDate
+          formControlName="startDate"
+          placeholder="Start date"
+        />
+        <input matEndDate formControlName="endDate" placeholder="End date" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle
+        (click)="onResetDate()"
+        *ngIf="
+          primaryReleaseDateControls['startDate'].value ||
+          primaryReleaseDateControls['endDate'].value
+        "
+        matSuffix
+      >
+        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
 
-  <mat-button-toggle-group name="sorting" aria-label="Ingredients" multiple>
-    <mat-button-toggle value="flour"
-      >Popularity <mat-icon>arrow_upward</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle value="eggs"
-      >Release Date <mat-icon>arrow_downward</mat-icon>
-    </mat-button-toggle>
-    <mat-button-toggle value="sugar"
-      >Vote Count <mat-icon>arrow_downward</mat-icon>
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-</div>
+    <mat-button-toggle-group
+      [formGroup]="sorting"
+      name="sorting"
+      aria-label="Ingredients"
+    >
+      <mat-button-toggle
+        (change)="onToggle($event, 'popularity')"
+        [value]="sortingControls['popularity'].value"
+        >Popularity
+        <mat-icon>{{
+          sortIconDict(sortingControls["popularity"].value)
+        }}</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle
+        (change)="onToggle($event, 'release_date')"
+        [value]="sortingControls['release_date'].value"
+        >Release Date
+        <mat-icon>{{
+          sortIconDict(sortingControls["release_date"].value)
+        }}</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle
+        (change)="onToggle($event, 'vote_count')"
+        [value]="sortingControls['vote_count'].value"
+        >Vote Count
+        <mat-icon>{{
+          sortIconDict(sortingControls["vote_count"].value)
+        }}</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
-<mat-grid-list cols="4" rowHeight="280">
-  <mat-grid-tile style="background-color: rgb(216, 216, 216)">1</mat-grid-tile>
-  <mat-grid-tile style="background-color: rgb(202, 202, 202)">2</mat-grid-tile>
-  <mat-grid-tile style="background-color: rgb(202, 202, 202)">3</mat-grid-tile>
-  <mat-grid-tile style="background-color: rgb(202, 202, 202)">4</mat-grid-tile>
-</mat-grid-list>
+  <mat-grid-list cols="4" rowHeight="720" gutterSize="10">
+    <ng-container *ngIf="vm.discoverMovies">
+      <mat-grid-tile *ngFor="let movie of vm.discoverMovies">
+        <mat-card appearance="outlined" class="inset-0 custom-card">
+          <img
+            style="
+              height: 380px;
+              object-fit: cover;
+              object-position: top center;
+            "
+            mat-card-image
+            [src]="movie.poster_path"
+            [attr.alt]="movie.title"
+          />
+          <mat-card-content style="flex: 1; padding: 1rem">
+            <h5 style="margin: 0; font-weight: 500" class="mat-headline-6 text-truncate">
+              {{ movie.title }}
+            </h5>
+            <div class="overview">
+              <h5 style="margin: 0; font-weight: 500" class="mat-body-1">
+                Overview
+              </h5>
+              <p style="min-height: 80px; color: #888888;" class="line-clamp-4 mat-caption">
+                {{ movie.overview }}
+              </p>
+            </div>
+            <div class="genres" style="margin-bottom: 10px;">
+              <h5 style="margin: 0; font-weight: 500" class="mat-body-1">
+                Genres
+              </h5>
+              <div style="display: flex">
+                <small
+                  style="color: #888888"
+                  *ngFor="let item of movie.genres; last as isLast"
+                  class="mat-caption"
+                  >{{ item }}<span *ngIf="!isLast">,</span></small
+                >
+              </div>
+            </div>
+            <div class="popularity">
+              <h5
+                style="margin: 0; font-weight: 500;"
+                class="mat-body-1"
+              >
+                Popularity
+              </h5>
+              <div style="display: flex">
+                <small style="color: #888888"> {{ movie.popularity }} </small>
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>LIKE</button>
+            <button mat-button>SHARE</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </ng-container>
+  </mat-grid-list>
+</ng-container>
