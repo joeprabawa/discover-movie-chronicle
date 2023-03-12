@@ -9,22 +9,148 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.mat-mdc-snack-bar-container.snackbar-warning {
+  --mdc-snackbar-container-color: #e7f342;
+  --mat-mdc-snack-bar-button-color: rgb(0, 0, 0);
+  --mdc-snackbar-supporting-text-color: rgb(1, 1, 1);
+}
+
+.mat-mdc-snack-bar-container.snackbar-success {
+  --mdc-snackbar-container-color: #2cc060;
+  --mat-mdc-snack-bar-button-color: rgb(0, 0, 0);
+  --mdc-snackbar-supporting-text-color: rgb(255, 255, 255);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.p-1 {
+  padding: 1rem!important;
 }
 
 .py-3 {
   padding: 3rem 0;
 }
 
+.fs-12px {
+  font-size: 12px;
+}
+
+
+
+.font-500 {
+  font-weight: 500!important;
+}
+
 .custom-card {
   max-width: 400px;
+}
+
+.custom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.flex-grow {
+  flex-grow: 1!important;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row !important;
+}
+
+.gx-2 {
+  row-gap: 2rem;
+}
+
+.gy-2 {
+  column-gap: 2rem;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
 }
 
 .inset-0 {
   position: absolute !important;
   inset: 0;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.background-cover-center {
+  background-position: center center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+
+.object-fit-cover-center {
+  object-fit: cover;
+  object-position: center;
+}
+
+.discover-thumbnail,
+.movie-detail-thumbnail {
+  height: 480px;
+}
+
+.movie-favourite-thumbnail {
+  height: 100%;
+}
+
+.movie-favourite-heading {
+  min-height: 70px;
+}
+
+.discover-thumbnail-not-found {
+  height: 480px;
+  background-color: rgb(205, 205, 205);
+}
+
+.h5 {
+  margin: 0;
+  font-weight: 500 !important;
+}
+
+.m-0 {
+  margin: 0 !important;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.color-grey {
+  color: #888888;
 }
 
 .text-truncate {
@@ -34,9 +160,43 @@ body {
   text-overflow: ellipsis;
 }
 
+.text-decoration-none {
+  text-decoration: none;
+}
+
 .line-clamp-4 {
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.movie-list-card-content,
+.movie-detail-card-content {
+  flex: 1;
+  padding: 1rem;
+}
+
+.movie-list-overview .overview,
+.movie-detail-overview .overview {
+  min-height: 80px;
+}
+
+.movie-list-genres,
+.movie-detail-genres,
+.movie-favourite-genres {
+  margin-bottom: 10px;
+}
+
+.movie-detail-card {
+  max-width: 480px;
+}
+
+.movie-favourite-card {
+  width: 380px;
+  height: 140px;
+}
+
+.movie-detail-backdrop {
+  height: 480px;
 }

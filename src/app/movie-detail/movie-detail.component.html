@@ -1,1 +1,135 @@
-<p>movie-detail works!</p>
+<ng-container
+  *ngIf="{
+    movieDetail: movieDetail$ | async,
+    saveToFavouriteAction: saveToFavouriteAction$ | async
+  } as vm"
+>
+  <div
+    class="inset-0 background-cover-center movie-detail-backdrop"
+    [style.background]="'url(' + vm.movieDetail?.backdrop_path + ')'"
+  ></div>
+  <div class="container">
+    <div class="py-3">
+      <div class="d-flex justify-center">
+        <mat-card appearance="outlined" class="movie-detail-card">
+          <img
+            class="movie-detail-thumbail object-fit-cover-center"
+            mat-card-image
+            [src]="vm.movieDetail?.poster_path"
+            [attr.alt]="vm.movieDetail?.title"
+          />
+          <mat-card-content class="movie-detail-card-content">
+            <h5 class="h5 mat-headline-6">
+              {{ vm.movieDetail?.title }}
+            </h5>
+            <div class="movie-detail-overview">
+              <h5 class="h5 m-0 mat-body-1">Overview</h5>
+              <p class="mat-caption color-grey">
+                {{ vm.movieDetail?.overview }}
+              </p>
+            </div>
+            <div class="d-flex justify-between">
+              <div class="movie-detail-genres">
+                <h5 class="h5 m-0 mat-body-1">Genres</h5>
+                <div class="d-flex">
+                  <small
+                    *ngFor="let item of vm.movieDetail?.genres; last as isLast"
+                    class="mat-caption color-grey"
+                  >
+                    {{ item.name }}<span *ngIf="!isLast">,</span></small
+                  >
+                </div>
+              </div>
+              <div class="release_date">
+                <h5 class="h5 m-0 mat-body-1">Release Date</h5>
+                <small class="color-grey">
+                  {{ vm.movieDetail?.release_date }}
+                </small>
+              </div>
+            </div>
+            <div class="d-flex justify-between mb-10">
+              <div class="popularity">
+                <h5 class="h5 m-0 mat-body-1">Popularity</h5>
+                <div class="d-flex">
+                  <small class="color-grey">
+                    {{ vm.movieDetail?.popularity }}
+                  </small>
+                </div>
+              </div>
+              <div class="vote_avg">
+                <h5 class="h5 m-0 mat-body-1">Vote Average</h5>
+                <div class="d-flex">
+                  <small class="color-grey">
+                    {{ vm.movieDetail?.vote_average }}
+                  </small>
+                </div>
+              </div>
+              <div class="vote_count">
+                <h5 class="h5 m-0 mat-body-1">Vote Count</h5>
+                <div class="d-flex">
+                  <small class="color-grey">
+                    {{ vm.movieDetail?.vote_count }}
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-between">
+              <div class="duration">
+                <h5 class="h5 m-0 mat-body-1">Duration</h5>
+                <p *ngIf="vm.movieDetail?.runtime" class="mat-caption">
+                  {{ vm.movieDetail?.runtime || 0 | durationRuntime }}
+                </p>
+              </div>
+              <div class="revenue">
+                <h5 class="h5 m-0 mat-body-1">Revenue</h5>
+                <p class="mat-caption">
+                  {{ vm.movieDetail?.revenue | currency }}
+                </p>
+              </div>
+            </div>
+            <div class="spoken-languange">
+              <h5 class="h5 m-0 mat-body-1">Spoken Language</h5>
+              <div class="d-flex">
+                <small
+                  *ngFor="
+                    let item of vm.movieDetail?.spoken_language;
+                    last as isLast
+                  "
+                  class="mat-caption color-grey"
+                >
+                  {{ item.name }}<span *ngIf="!isLast">,</span></small
+                >
+              </div>
+            </div>
+            <div class="production_house mt-1">
+              <h5 class="h5 m-0 mat-body-1">Production Companies</h5>
+              <div class="d-flex">
+                <small
+                  *ngFor="
+                    let item of vm.movieDetail?.production_companies;
+                    last as isLast
+                  "
+                  class="mat-caption color-grey"
+                >
+                  {{ item.name }}<span *ngIf="!isLast">,</span></small
+                >
+              </div>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="justify-between">
+            <button mat-button [routerLink]="['/discover']">
+              Back to Discover
+            </button>
+            <button
+              *ngIf="vm.movieDetail?.id"
+              mat-button
+              (click)="markAsFavourite(vm.movieDetail!.id)"
+            >
+              Save
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</ng-container>

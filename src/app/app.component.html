@@ -1,17 +1,10 @@
 <mat-toolbar color="primary">
-  <span>Discover Movie</span>
-  <span class="example-spacer"></span>
-  <button
-    mat-icon-button
-    class="example-icon favorite-icon"
-    aria-label="Example icon-button with heart icon"
-  >
-    <mat-icon>favorite</mat-icon>
+  <span class="cursor-pointer" [routerLink]="['/']">Discover Movie</span>
+  <span class="spacer"></span>
+  <button mat-button class="example-icon favorite-icon" [routerLink]="['/favourites']">
+    <mat-icon>bookmark_order</mat-icon>
+    Favourite Movies
   </button>
 </mat-toolbar>
 
-<div class="container">
-  <div class="py-3">
-    <router-outlet></router-outlet>
-  </div>
-</div>
+<router-outlet></router-outlet>

@@ -1,8 +1,8 @@
 export class Discover {
-  id!: string
+  id!: number;
   title!: string;
   overview!: string;
-  poster_path!: string;
+  poster_path?: string | null;
   popularity!: number;
   genres!: string[];
 
@@ -13,7 +13,7 @@ export class Discover {
     parsed.overview = data.overview;
     parsed.popularity = data.popularity;
     parsed.genres = this.getGenre(data.genre_ids, genres);
-    parsed.poster_path = `http://image.tmdb.org/t/p/w342${data.poster_path}`
+    parsed.poster_path = data.poster_path ? `http://image.tmdb.org/t/p/w342${data.poster_path}` : null
     return parsed;
   }
 

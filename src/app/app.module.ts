@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DurationRuntimePipe } from './pipes/duration.pipe';
 
 @NgModule({
   declarations: [

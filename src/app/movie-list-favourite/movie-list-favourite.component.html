@@ -1,0 +1,65 @@
+<ng-container
+  *ngIf="{
+    favouriteMovies: favouriteMovies$ | async,
+    saveOrder: saveOrder$ | async
+  } as vm"
+>
+  <div class="container">
+    <div class="py-3">
+      <div
+        *ngIf="vm.favouriteMovies.length; else emptyCollection"
+        cdkDropList
+        class="d-flex flex-column items-center gx-2"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <mat-button-toggle-group>
+          <mat-button-toggle value="refresh" (click)="refreshOrder()"
+            >Refresh Order</mat-button-toggle
+          >
+          <mat-button-toggle value="save_order" (click)="saveOrder()"
+            >Save Order</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+        <mat-card
+          appearance="outlined"
+          class="movie-favourite-card flex-row"
+          *ngFor="let movie of vm.favouriteMovies"
+          cdkDrag
+        >
+          <div class="d-flex items-center">
+            <button mat-icon-button disableRipple style="cursor: grabbing">
+              <mat-icon class="color-grey">reorder</mat-icon>
+            </button>
+          </div>
+          <img
+            class="movie-favourite-thumbnail object-fit-cover-center"
+            [src]="movie.poster_path"
+          />
+          <mat-card-content class="flex-grow p-1">
+            <div class="movie-favourite-heading">
+              <h5 class="h5 mat-body-1 m-0">{{ movie.title }}</h5>
+              <div class="color-grey">
+                <small>{{ movie.runtime | durationRuntime }}</small>
+              </div>
+            </div>
+            <div class="movie-favourite-genres">
+              <h5 class="fs-12px font-500 m-0">Genres</h5>
+              <div class="d-flex">
+                <small
+                  *ngFor="let item of movie.genres; last as isLast"
+                  class="mat-caption color-grey"
+                  >{{ item.name }}<span *ngIf="!isLast">,</span></small
+                >
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #emptyCollection>
+  <p class="mat-body-1 font-500 m-0">Your movie collection is empty</p>
+  <a class="color-grey text-decoration-none" [routerLink]="['/discover']">Go back to discover movies</a>
+</ng-template>
