@@ -8,7 +8,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { DurationRuntimePipe } from '../pipes/duration.pipe';
 import { FavouriteMovie } from '../models/FavouriteMovie';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-movie-detail',
@@ -18,7 +17,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     RouterModule,
     MatCardModule,
     MatButtonModule,
-    MatSnackBarModule,
     DurationRuntimePipe
   ],
   templateUrl: './movie-detail.component.html',
@@ -27,11 +25,10 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 export class MovieDetailComponent {
   private _movieId$: Subject<number> = new Subject();
 
-  constructor(private _route: ActivatedRoute, private _appService: AppService, private _snackbar: MatSnackBar) { }
+  constructor(private _route: ActivatedRoute, private _appService: AppService) { }
 
   movieDetail$ = this._route.params.pipe(
     switchMap(params => this._appService.getMovieDetail(params['movieId'])),
-    tap(console.log),
     map(response => MovieDetail.parse(response)),
   )
 
@@ -42,36 +39,7 @@ export class MovieDetailComponent {
       of(movieId)
     )),
     map(([response, movieId]) => ({ movie: FavouriteMovie.parse(response), movieId })),
-    tap(({ movie, movieId }) => {
-      const storage: FavouriteMovie[] = JSON.parse(localStorage.getItem('myFavouriteMovies') as string);
-
-      if (!storage?.length) {
-        const parseMovie = JSON.stringify([{ ...movie, date_added: new Date() }])
-        localStorage.setItem('myFavouriteMovies', parseMovie);
-        this._snackbar.open('Success! Movie listed as favourite', undefined, {
-          panelClass: ['snackbar-success'],
-          duration: 2000
-        })
-        return;
-      }
-
-      const findItem: FavouriteMovie = storage.find(movie => movie.id === movieId) as FavouriteMovie
-      if (findItem) {
-        this._snackbar.open('Movie already listed as favourite', undefined, {
-          panelClass: ['snackbar-warning'],
-          duration: 2000
-        })
-        return;
-      }
-
-      storage.push({ ...movie, date_added: new Date() })
-      localStorage.setItem('myFavouriteMovies', JSON.stringify(storage));
-
-      this._snackbar.open('Success! Movie listed as favourite', undefined, {
-        panelClass: ['snackbar-success'],
-        duration: 2000
-      })
-    })
+    tap(({ movie, movieId }) => this._appService.markMovieAsFavourite(movie, movieId))
   )
 
   markAsFavourite(movieId: number): void {

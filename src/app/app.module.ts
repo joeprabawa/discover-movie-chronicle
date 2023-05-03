@@ -12,6 +12,7 @@ import { DateAdapter, MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE, Na
 import { HttpClientModule } from '@angular/common/http';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DurationRuntimePipe } from './pipes/duration.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { DurationRuntimePipe } from './pipes/duration.pipe';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    MatSnackBarModule,
     NativeDateModule
   ],
   providers: [
